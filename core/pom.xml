@@ -13,6 +13,7 @@
 
     <!-- Header -->
     <artifactId>klogger-core</artifactId>
+    <packaging>jar</packaging>
 
     <!-- Description -->
     <name>Klogger Core</name>
