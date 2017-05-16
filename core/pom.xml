@@ -4,21 +4,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- Parent -->
+    <parent>
+        <artifactId>klogger</artifactId>
+        <groupId>io.github.romainbsl.klogger</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
     <!-- Header -->
-    <groupId>io.github.romainbsl.klogger</groupId>
-    <artifactId>klogger</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
+    <artifactId>klogger-core</artifactId>
 
     <!-- Description -->
-    <name>KLogger</name>
+    <name>Klogger Core</name>
     <description>
-        Library that aim to help developers to handle Errors and Exceptions in their projects.
+        Core library of the KLogger project
     </description>
-
-    <!-- Sub-modules -->
-    <modules>
-        <module>core</module>
-    </modules>
 
 </project>
