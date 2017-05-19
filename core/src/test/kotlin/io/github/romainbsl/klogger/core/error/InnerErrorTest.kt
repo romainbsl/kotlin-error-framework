@@ -3,28 +3,29 @@ package io.github.romainbsl.klogger.core.error
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mock
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
 
 class InnerErrorTest {
 
     //region Main InnerError Mock
     val mainCode = "ERROR_CODE"
     val mainmessage = "ERROR_MESSAGE"
-    @Mock lateinit var mockMainInnerError: InnerError
+    val mockMainInnerError = mock(InnerError::class.java)
     //endregion1
     //region Level 1 sub inner error
     val level1code = "LEVEL1_ERROR_CODE"
     val level1message = "LEVEL1_ERROR_MESSAGE"
-    @Mock lateinit var mockLevel1InnerError: InnerError
+    val mockLevel1InnerError = mock(InnerError::class.java)
     //endregion
     //region Level 2 sub inner error
     val level2code = "LEVEL2_ERROR_CODE"
     val level2message = "LEVEL2_ERROR_MESSAGE"
-    @Mock lateinit var mockLevel2InnerError: InnerError
+    val mockLevel2InnerError = mock(InnerError::class.java)
     //endregion
 
     @Before fun setup() {
-        /* // setup mockMainInnerError
+         // setup mockMainInnerError
         `when`(mockMainInnerError.code).thenReturn(mainCode)
         `when`(mockMainInnerError.message).thenReturn(mainmessage)
         // setup mockLevel1InnerError
@@ -32,11 +33,7 @@ class InnerErrorTest {
         `when`(mockLevel1InnerError.message).thenReturn(level1message)
         // setup mockLevel2InnerError
         `when`(mockLevel2InnerError.code).thenReturn(level2code)
-        `when`(mockLevel2InnerError.message).thenReturn(level2message) */
-
-        mockMainInnerError = InnerError(code = mainCode, message = mainmessage)
-        mockLevel1InnerError = InnerError(code = level1code, message = level1message)
-        mockLevel2InnerError = InnerError(code = level2code, message = level2message)
+        `when`(mockLevel2InnerError.message).thenReturn(level2message)
     }
 
     @Test fun setOuterError() {
