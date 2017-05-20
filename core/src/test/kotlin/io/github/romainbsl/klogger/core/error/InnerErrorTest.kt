@@ -4,24 +4,24 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
+import org.mockito.Mockito.spy
 
 class InnerErrorTest {
 
     //region Main InnerError Mock
     val mainCode = "ERROR_CODE"
     val mainmessage = "ERROR_MESSAGE"
-    val mockMainInnerError = mock(InnerError::class.java)
+    val mockMainInnerError = spy(InnerError::class.java)
     //endregion1
     //region Level 1 sub inner error
     val level1code = "LEVEL1_ERROR_CODE"
     val level1message = "LEVEL1_ERROR_MESSAGE"
-    val mockLevel1InnerError = mock(InnerError::class.java)
+    val mockLevel1InnerError = spy(InnerError::class.java)
     //endregion
     //region Level 2 sub inner error
     val level2code = "LEVEL2_ERROR_CODE"
     val level2message = "LEVEL2_ERROR_MESSAGE"
-    val mockLevel2InnerError = mock(InnerError::class.java)
+    val mockLevel2InnerError = spy(InnerError::class.java)
     //endregion
 
     @Before fun setup() {
@@ -50,8 +50,8 @@ class InnerErrorTest {
     }
 
     @Test fun invert() {
-        mockMainInnerError.innerError = mockLevel1InnerError
-        mockLevel1InnerError.innerError = mockLevel2InnerError
+        `when`(mockMainInnerError.innerError).thenReturn(mockLevel1InnerError)
+        `when`(mockLevel1InnerError.innerError).thenReturn(mockLevel2InnerError)
         val invertedInnerError = mockMainInnerError.invert()
 
         assertThat(mockMainInnerError.innerError).isNull()
