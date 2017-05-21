@@ -6,11 +6,36 @@ data class InnerError(val code: String, val message: String, var innerError: Inn
             error.innerError = this
     }
 
-    fun invert() = invert(inError = null)
+    fun invert() = invert(error = null)
 
-    private fun invert(inError: InnerError? = null): InnerError {
-        val thisError = innerError?.copy()
-        innerError = inError
-        return thisError?.invert(this) ?: this
+    private fun invert(error: InnerError? = null): InnerError {
+        val firstInnerError = innerError?.invert(this)
+        innerError = error
+        return firstInnerError ?: this
+    }
+}
+
+data class ImmutableInnerError(val code: String, val message: String) {
+    var innerError: ImmutableInnerError? = null
+        private set
+
+    constructor(code: String, message: String, innerError: ImmutableInnerError) : this(code, message) {
+        this.innerError = innerError
+    }
+
+    infix fun inner(error: ImmutableInnerError) {
+        error.innerError = this
+    }
+
+    infix fun outer(error: ImmutableInnerError) {
+        this.innerError = error
+    }
+
+    fun invert() = invert(error = null)
+
+    private fun invert(error: ImmutableInnerError? = null): ImmutableInnerError {
+        val subInnerError = this.copy(code, message)
+        subInnerError.innerError = error
+        return innerError?.invert(subInnerError) ?: subInnerError
     }
 }
