@@ -11,17 +11,17 @@ class InnerErrorTest {
     //region Main InnerError Mock
     val mainCode = "ERROR_CODE"
     val mainmessage = "ERROR_MESSAGE"
-    val mockMainInnerError = spy(InnerError::class.java)
+    var mockMainInnerError = spy(InnerError::class.java)
     //endregion1
     //region Level 1 sub inner error
     val level1code = "LEVEL1_ERROR_CODE"
     val level1message = "LEVEL1_ERROR_MESSAGE"
-    val mockLevel1InnerError = spy(InnerError::class.java)
+    var mockLevel1InnerError = spy(InnerError::class.java)
     //endregion
     //region Level 2 sub inner error
     val level2code = "LEVEL2_ERROR_CODE"
     val level2message = "LEVEL2_ERROR_MESSAGE"
-    val mockLevel2InnerError = spy(InnerError::class.java)
+    var mockLevel2InnerError = spy(InnerError::class.java)
     //endregion
 
     @Before fun setup() {
