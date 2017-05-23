@@ -1,5 +1,31 @@
 package io.github.romainbsl.klogger.core.error
 
+data class InnerError(val code: String, val message: String) {
+    var innerError: InnerError? = null
+        private set
+
+    constructor(code: String, message: String, innerError: InnerError) : this(code, message) {
+        this.innerError = innerError
+    }
+
+    infix fun inner(error: InnerError) {
+        error.innerError = this
+    }
+
+    infix fun outer(error: InnerError) {
+        this.innerError = error
+    }
+
+    fun invert() = invert(error = null)
+
+    private fun invert(error: InnerError? = null): InnerError {
+        val subInnerError = this.copy(code, message)
+        subInnerError.innerError = error
+        return innerError?.invert(subInnerError) ?: subInnerError
+    }
+}
+
+/*
 data class InnerError(val code: String, val message: String, var innerError: InnerError? = null) {
     fun setOuterError(error: InnerError) {
         if (!error.equals(this.innerError))
@@ -14,28 +40,4 @@ data class InnerError(val code: String, val message: String, var innerError: Inn
         return firstInnerError ?: this
     }
 }
-
-data class ImmutableInnerError(val code: String, val message: String) {
-    var innerError: ImmutableInnerError? = null
-        private set
-
-    constructor(code: String, message: String, innerError: ImmutableInnerError) : this(code, message) {
-        this.innerError = innerError
-    }
-
-    infix fun inner(error: ImmutableInnerError) {
-        error.innerError = this
-    }
-
-    infix fun outer(error: ImmutableInnerError) {
-        this.innerError = error
-    }
-
-    fun invert() = invert(error = null)
-
-    private fun invert(error: ImmutableInnerError? = null): ImmutableInnerError {
-        val subInnerError = this.copy(code, message)
-        subInnerError.innerError = error
-        return innerError?.invert(subInnerError) ?: subInnerError
-    }
-}
+*/
