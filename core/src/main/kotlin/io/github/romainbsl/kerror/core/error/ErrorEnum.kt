@@ -1,4 +1,4 @@
-package io.github.romainbsl.klogger.core.error
+package io.github.romainbsl.kerror.core.error
 
 enum class ErrorEnum private constructor(val code: String, val message: String) {
     // adding errors here are breaking changes (meaning an update in version number is needed)

@@ -1,4 +1,4 @@
-package io.github.romainbsl.klogger.core.error
+package io.github.romainbsl.kerror.core.error
 
 import java.util.*
 
@@ -14,8 +14,7 @@ open class ErrorBase(val code: String, val message: String) {
     }
 
     infix fun inner(error: InnerError) {
-        if (this.innerError != null)
-            error inner this.innerError as InnerError
+        if (this.innerError != null) error inner this.innerError!!
     }
 
     infix fun outer(error: InnerError) = this.innerError?.outer(error)

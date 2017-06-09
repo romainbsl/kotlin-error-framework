@@ -1,4 +1,4 @@
-package io.github.romainbsl.klogger.core.error
+package io.github.romainbsl.kerror.core.error
 
 data class InnerError(val code: String, val message: String) {
     var innerError: InnerError? = null
