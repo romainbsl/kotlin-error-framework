@@ -9,18 +9,18 @@ open class ErrorBase(val code: String, val message: String) : Cloneable {
     var details = LinkedList<ErrorBase>()
         private set
 
-    infix fun inner(error: InnerError) = testInnerOuter(error, InnerError::inner)
-    infix fun outer(error: InnerError) = testInnerOuter(error, InnerError::outer)
+    infix fun inner(error: InnerError) = invokeInnerOuter(error, InnerError::inner)
+    infix fun outer(error: InnerError) = invokeInnerOuter(error, InnerError::outer)
 
-    private fun testInnerOuter(error: InnerError,
-                               method: KFunction2<InnerError,
+    private fun invokeInnerOuter(error: InnerError,
+                                 method: KFunction2<InnerError,
                                        @ParameterName(name = "error") InnerError, InnerError>) {
         val localInnerError = innerError
 
         innerError = when {
             localInnerError == null -> error
-            method == InnerError::inner -> method.invoke(error, localInnerError)
-            method == InnerError::outer -> method.invoke(localInnerError, error)
+            method == InnerError::inner -> method.invoke(localInnerError, error)
+            method == InnerError::outer -> method.invoke(error, localInnerError)
             else -> throw IllegalArgumentException()
         }
     }
