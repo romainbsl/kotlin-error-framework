@@ -1,6 +1,6 @@
 package io.github.romainbsl.kerror.core.error
 
-data class InnerError(val code: String, val message: String) {
+open class InnerError(val code: String, val message: String) : Cloneable {
     var innerError: InnerError? = null
         private set
 
@@ -21,25 +21,12 @@ data class InnerError(val code: String, val message: String) {
     fun invert() = invert(error = null)
 
     private fun invert(error: InnerError? = null): InnerError {
-        val subInnerError = this.copy(code, message)
+        val subInnerError = this.clone()
         subInnerError.innerError = error
         return innerError?.invert(subInnerError) ?: subInnerError
     }
-}
 
-/*
-data class InnerError(val code: String, val message: String, var innerError: InnerError? = null) {
-    fun setOuterError(error: InnerError) {
-        if (!error.equals(this.innerError))
-            error.innerError = this
-    }
-
-    fun invert() = invert(error = null)
-
-    private fun invert(error: InnerError? = null): InnerError {
-        val firstInnerError = innerError?.invert(this)
-        innerError = error
-        return firstInnerError ?: this
+    override public fun clone(): InnerError {
+        return super.clone() as InnerError
     }
 }
-*/
