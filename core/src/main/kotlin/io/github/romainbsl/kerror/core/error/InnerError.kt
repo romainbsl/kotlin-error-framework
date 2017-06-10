@@ -8,12 +8,14 @@ data class InnerError(val code: String, val message: String) {
         this.innerError = innerError
     }
 
-    infix fun inner(error: InnerError) {
+    infix fun inner(error: InnerError) : InnerError {
         error.innerError = this
+        return error
     }
 
-    infix fun outer(error: InnerError) {
+    infix fun outer(error: InnerError): InnerError {
         this.innerError = error
+        return this
     }
 
     fun invert() = invert(error = null)
