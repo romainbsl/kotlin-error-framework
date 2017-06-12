@@ -20,35 +20,19 @@ class InnerErrorTest {
         val innerCopy =
                 innerError_1.clone() outer innerError_2.clone()
 
-        assert(
-                innerCopy.code == innerError_1.code &&
-                        innerCopy.message == innerError_1.message
-        )
-        assert(
-                innerCopy.innerError?.code == innerError_2.code &&
-                        innerCopy.innerError?.message == innerError_2.message
-        )
+        assert(innerCopy == innerError_1)
+        assert(innerCopy.innerError == innerError_2)
     }
 
-    @Test
-    fun inner() {
+    @Test fun inner() {
         val innerCopy =
                 innerError_1.clone()
                         .inner(innerError_2.clone())
                         .inner(innerError_3.clone())
 
-        assert(
-                innerCopy.code == innerError_3.code &&
-                        innerCopy.message == innerError_3.message
-        )
-        assert(
-                innerCopy.innerError?.code == innerError_2.code &&
-                        innerCopy.innerError?.message == innerError_2.message
-        )
-        assert(
-                innerCopy.innerError?.innerError?.code == innerError_1.code &&
-                        innerCopy.innerError?.innerError?.message == innerError_1.message
-        )
+        assert(innerCopy == innerError_3)
+        assert(innerCopy.innerError == innerError_2)
+        assert(innerCopy.innerError?.innerError == innerError_1)
     }
 
     @Test fun outer() {
@@ -57,18 +41,9 @@ class InnerErrorTest {
                         .outer(innerError_2.clone()
                                 .outer(innerError_3.clone()))
 
-        assert(
-                innerCopy.code == innerError_1.code &&
-                        innerCopy.message == innerError_1.message
-        )
-        assert(
-                innerCopy.innerError?.code == innerError_2.code &&
-                        innerCopy.innerError?.message == innerError_2.message
-        )
-        assert(
-                innerCopy.innerError?.innerError?.code == innerError_3.code &&
-                        innerCopy.innerError?.innerError?.message == innerError_3.message
-        )
+        assert(innerCopy == innerError_1)
+        assert(innerCopy.innerError == innerError_2)
+        assert(innerCopy.innerError?.innerError == innerError_3)
     }
 
     @Test fun invertOuter() {
@@ -77,32 +52,15 @@ class InnerErrorTest {
                         .outer(innerError_2.clone()
                                 .outer(innerError_3.clone()))
 
-        assert(
-                innerCopy.code == innerError_1.code &&
-                        innerCopy.message == innerError_1.message
-        )
-        assert(
-                innerCopy.innerError?.code == innerError_2.code &&
-                        innerCopy.innerError?.message == innerError_2.message
-        )
-        assert(
-                innerCopy.innerError?.innerError?.code == innerError_3.code &&
-                        innerCopy.innerError?.innerError?.message == innerError_3.message
-        )
+        assert(innerCopy == innerError_1)
+        assert(innerCopy.innerError == innerError_2)
+        assert(innerCopy.innerError?.innerError == innerError_3)
+
         val invertInnerCopy = innerCopy.invert()
 
-        assert(
-                invertInnerCopy.code == innerError_3.code &&
-                        invertInnerCopy.message == innerError_3.message
-        )
-        assert(
-                invertInnerCopy.innerError?.code == innerError_2.code &&
-                        invertInnerCopy.innerError?.message == innerError_2.message
-        )
-        assert(
-                invertInnerCopy.innerError?.innerError?.code == innerError_1.code &&
-                        invertInnerCopy.innerError?.innerError?.message == innerError_1.message
-        )
+        assert(invertInnerCopy == innerError_3)
+        assert(invertInnerCopy.innerError == innerError_2)
+        assert(invertInnerCopy.innerError?.innerError == innerError_1)
     }
 
     @Test fun invertInner() {
@@ -111,33 +69,14 @@ class InnerErrorTest {
                         .inner(innerError_2.clone())
                         .inner(innerError_3.clone())
 
-        assert(
-                innerCopy.code == innerError_3.code &&
-                        innerCopy.message == innerError_3.message
-        )
-        assert(
-                innerCopy.innerError?.code == innerError_2.code &&
-                        innerCopy.innerError?.message == innerError_2.message
-        )
-        assert(
-                innerCopy.innerError?.innerError?.code == innerError_1.code &&
-                        innerCopy.innerError?.innerError?.message == innerError_1.message
-        )
+        assert(innerCopy == innerError_3)
+        assert(innerCopy.innerError == innerError_2)
+        assert(innerCopy.innerError?.innerError == innerError_1)
 
         val invertInnerCopy = innerCopy.invert()
 
-        assert(
-                invertInnerCopy.code == innerError_1.code &&
-                        invertInnerCopy.message == innerError_1.message
-        )
-        assert(
-                invertInnerCopy.innerError?.code == innerError_2.code &&
-                        invertInnerCopy.innerError?.message == innerError_2.message
-        )
-        assert(
-                invertInnerCopy.innerError?.innerError?.code == innerError_3.code &&
-                        invertInnerCopy.innerError?.innerError?.message == innerError_3.message
-        )
+        assert(invertInnerCopy == innerError_1)
+        assert(invertInnerCopy.innerError == innerError_2)
+        assert(invertInnerCopy.innerError?.innerError == innerError_3)
     }
-
 }

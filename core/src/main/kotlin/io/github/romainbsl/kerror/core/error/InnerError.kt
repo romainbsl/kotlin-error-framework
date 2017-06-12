@@ -29,4 +29,14 @@ open class InnerError(val code: String, val message: String) : Cloneable {
     override public fun clone(): InnerError {
         return super.clone() as InnerError
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is InnerError) return false
+
+        if (code != other.code) return false
+        if (message != other.message) return false
+
+        return true
+    }
 }
