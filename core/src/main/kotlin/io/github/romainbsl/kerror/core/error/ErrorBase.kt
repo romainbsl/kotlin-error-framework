@@ -14,7 +14,7 @@ open class ErrorBase(val code: String, val message: String) : Cloneable {
 
     private fun invokeInnerOuter(error: InnerError,
                                  method: KFunction2<InnerError,
-                                       @ParameterName(name = "error") InnerError, InnerError>) {
+                                         @ParameterName(name = "error") InnerError, InnerError>) {
         val localInnerError = innerError
 
         innerError = when {
@@ -30,6 +30,32 @@ open class ErrorBase(val code: String, val message: String) : Cloneable {
     }
 
     override public fun clone(): ErrorBase {
-        return super.clone() as ErrorBase
+        val newError = super.clone() as ErrorBase
+        // deep clone on details
+        // list's items aren't clone by default
+        newError.details.map { it.clone() }.toCollection(details)
+        return newError
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is ErrorBase) return false
+
+        if (code != other.code) return false
+        if (message != other.message) return false
+        if (innerError != other.innerError) return false
+        if (details != other.details) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = code.hashCode()
+        result = 31 * result + message.hashCode()
+        result = 31 * result + (innerError?.hashCode() ?: 0)
+        result = 31 * result + details.hashCode()
+        return result
+    }
+
+
 }
