@@ -8,7 +8,7 @@ open class InnerError(val code: String, val message: String) : Cloneable {
         this.innerError = innerError
     }
 
-    infix fun inner(error: InnerError) : InnerError {
+    infix fun inner(error: InnerError): InnerError {
         error.innerError = this
         return error
     }
@@ -38,5 +38,12 @@ open class InnerError(val code: String, val message: String) : Cloneable {
         if (message != other.message) return false
 
         return true
+    }
+
+    override fun hashCode(): Int {
+        var result = code.hashCode()
+        result = 31 * result + message.hashCode()
+        result = 31 * result + (innerError?.hashCode() ?: 0)
+        return result
     }
 }
