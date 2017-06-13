@@ -69,16 +69,53 @@ class ErrorBaseTest {
     }
 
     @Test fun inner() {
+        assert(errorBase_51.innerError == null)
 
+        errorBase_51.inner(innerError_1.clone())
+        assert(errorBase_51.innerError == innerError_1)
+
+        errorBase_51.inner(innerError_2.clone())
+        assert(errorBase_51.innerError == innerError_1)
+        assert(errorBase_51.innerError?.innerError == innerError_2)
+
+        errorBase_51.inner(innerError_3.clone())
+        assert(errorBase_51.innerError == innerError_1)
+        assert(errorBase_51.innerError?.innerError == innerError_2)
+        assert(errorBase_51.innerError?.innerError?.innerError == innerError_3)
     }
 
     @Test fun outer() {
+        assert(errorBase_61.innerError == null)
 
+        errorBase_61.outer(innerError_1.clone())
+        assert(errorBase_61.innerError == innerError_1)
+        errorBase_61.outer(innerError_2.clone())
+
+        assert(errorBase_61.innerError == innerError_2)
+        assert(errorBase_61.innerError?.innerError == innerError_1)
     }
 
-    @Test fun invertInnerError() {
+    @Test fun invertInneredInnerError() {
+        assert(errorBase_71.innerError == innerError_3)
+        assert(errorBase_71.innerError?.innerError == innerError_2)
+        assert(errorBase_71.innerError?.innerError?.innerError == innerError_1)
 
+        errorBase_71.invertInnerError()
+
+        assert(errorBase_71.innerError == innerError_1)
+        assert(errorBase_71.innerError?.innerError == innerError_2)
+        assert(errorBase_71.innerError?.innerError?.innerError == innerError_3)
     }
 
+    @Test fun invertOuteredInnerError() {
+        assert(errorBase_72.innerError == innerError_1)
+        assert(errorBase_72.innerError?.innerError == innerError_2)
+        assert(errorBase_72.innerError?.innerError?.innerError == innerError_3)
 
+        errorBase_72.invertInnerError()
+
+        assert(errorBase_72.innerError == innerError_3)
+        assert(errorBase_72.innerError?.innerError == innerError_2)
+        assert(errorBase_72.innerError?.innerError?.innerError == innerError_1)
+    }
 }

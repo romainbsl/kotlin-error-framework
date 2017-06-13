@@ -13,14 +13,13 @@ open class ErrorBase(val code: String, val message: String) {
     infix fun outer(error: InnerError) = invokeInnerOuter(error, InnerError::outer)
 
     private fun invokeInnerOuter(error: InnerError,
-                                 method: KFunction2<InnerError,
-                                         @ParameterName(name = "error") InnerError, InnerError>) {
+                                 method: KFunction2<InnerError, InnerError, InnerError>) {
         val localInnerError = innerError
 
-        innerError = when {
-            localInnerError == null -> error
-            method == InnerError::inner -> method.invoke(localInnerError, error)
-            method == InnerError::outer -> method.invoke(error, localInnerError)
+        when {
+            localInnerError == null -> innerError = error
+            method == InnerError::inner -> method.invoke(error, localInnerError.last())
+            method == InnerError::outer -> innerError = method.invoke(error, localInnerError)
             else -> throw IllegalArgumentException()
         }
     }

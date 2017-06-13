@@ -46,4 +46,14 @@ open class InnerError(val code: String, val message: String) : Cloneable {
         result = 31 * result + (innerError?.hashCode() ?: 0)
         return result
     }
+
+    fun last(): InnerError {
+        var innerLocal = this
+
+        while (innerLocal.innerError != null) {
+            innerLocal = this.innerError!!
+        }
+
+        return innerLocal
+    }
 }
