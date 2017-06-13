@@ -3,7 +3,7 @@ package io.github.romainbsl.kerror.core.error
 import java.util.*
 import kotlin.reflect.KFunction2
 
-open class ErrorBase(val code: String, val message: String) : Cloneable {
+open class ErrorBase(val code: String, val message: String) {
     var innerError: InnerError? = null
         private set
     var details = LinkedList<ErrorBase>()
@@ -27,14 +27,6 @@ open class ErrorBase(val code: String, val message: String) : Cloneable {
 
     fun invertInnerError() {
         innerError = innerError?.invert()
-    }
-
-    override public fun clone(): ErrorBase {
-        val newError = super.clone() as ErrorBase
-        // deep clone on details
-        // list's items aren't clone by default
-        newError.details.map { it.clone() }.toCollection(details)
-        return newError
     }
 
     override fun equals(other: Any?): Boolean {
