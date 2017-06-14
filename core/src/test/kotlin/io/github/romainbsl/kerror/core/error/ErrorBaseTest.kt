@@ -14,6 +14,11 @@ class ErrorBaseTest {
         assert(errorBase_2.message == "ErrorBaseMsg_2")
         assert(errorBase_3.message == "ErrorBaseMsg_3")
     }
+    @Test fun errorHashCode() {
+        assert(errorBase_1.hashCode() == 1043150723)
+        assert(errorBase_2.hashCode() == 1043181475)
+        assert(errorBase_3.hashCode() == 1043212227)
+    }
 
     @Test fun getInnerError() {
         assert(errorBase_1.innerError == null)

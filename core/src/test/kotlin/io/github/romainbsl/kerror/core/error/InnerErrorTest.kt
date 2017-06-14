@@ -25,6 +25,12 @@ class InnerErrorTest {
         assert(innerError_3.clone().message == "InnerMsg_3")
     }
 
+    @Test fun innerHashCode() {
+        assert(innerError_1.clone().hashCode() == -1174383560)
+        assert(innerError_2.clone().hashCode() == -1174382568)
+        assert(innerError_3.clone().hashCode() == -1174381576)
+    }
+
     @Test fun getInnerError() {
         val innerCopy =
                 innerError_1.clone() outer innerError_2.clone()
