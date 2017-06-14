@@ -40,8 +40,7 @@ open class InnerError(val code: String, val message: String) : Cloneable {
      * becomes
      * inner3 -> inner2 -> inner1
      */
-    fun invert() = invert(error = null)
-    private fun invert(error: InnerError? = null): InnerError {
+    fun invert(error: InnerError? = null): InnerError {
         val subInnerError = this.clone()
         subInnerError.innerError = error
         return innerError?.invert(subInnerError) ?: subInnerError

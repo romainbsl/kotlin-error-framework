@@ -4,6 +4,15 @@ import org.junit.Test
 
 class InnerErrorTest {
 
+    @Test fun innerErrorCtor() {
+        val innerError = InnerError("innerCtorCode_1","innerCtorMsg_1", InnerError("innerCtorCode_2","innerCtorMsg_2"))
+
+        assert(innerError.code == "innerCtorCode_1")
+        assert(innerError.message == "innerCtorMsg_1")
+        assert(innerError.innerError?.code == "innerCtorCode_2")
+        assert(innerError.innerError?.message == "innerCtorMsg_2")
+    }
+
     @Test fun getCode() {
         assert(innerError_1.clone().code == "InnerCode_1")
         assert(innerError_2.clone().code == "InnerCode_2")
@@ -63,7 +72,7 @@ class InnerErrorTest {
         assert(invertInnerCopy.innerError?.innerError == innerError_1)
     }
 
-    @Test fun invertInner() {
+    @Test fun invert() {
         val innerCopy =
                 innerError_1.clone()
                         .inner(innerError_2.clone())
@@ -74,6 +83,21 @@ class InnerErrorTest {
         assert(innerCopy.innerError?.innerError == innerError_1)
 
         val invertInnerCopy = innerCopy.invert()
+
+        assert(invertInnerCopy == innerError_1)
+        assert(invertInnerCopy.innerError == innerError_2)
+        assert(invertInnerCopy.innerError?.innerError == innerError_3)
+    }
+
+    @Test fun parameterizedInvert() {
+        val innerCopy =
+                innerError_1.clone()
+                        .inner(innerError_2.clone())
+
+        assert(innerCopy == innerError_2)
+        assert(innerCopy.innerError == innerError_1)
+
+        val invertInnerCopy = innerCopy.invert(innerError_3.clone())
 
         assert(invertInnerCopy == innerError_1)
         assert(invertInnerCopy.innerError == innerError_2)
