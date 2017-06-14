@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Parent module -->
+    <parent>
+        <artifactId>kerror</artifactId>
+        <groupId>io.github.romainbsl.kerror</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <!-- Header -->
+    <artifactId>kerror-web</artifactId>
+    <packaging>jar</packaging>
+
+    <!-- Description -->
+    <name>KError Web Utils</name>
+    <description>
+        Tools to help developers handle errors in Web API projects
+    </description>
+</project>
