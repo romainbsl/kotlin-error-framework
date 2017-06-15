@@ -1,42 +1,103 @@
 package io.github.romainbsl.kerror.core.error
 
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class InnerErrorTest {
 
     @Test fun innerErrorCtor() {
-        val innerError = InnerError("innerCtorCode_1","innerCtorMsg_1", InnerError("innerCtorCode_2","innerCtorMsg_2"))
+        val innerError = InnerError("innerCtorCode_1", "innerCtorMsg_1",
+                InnerError("innerCtorCode_2", "innerCtorMsg_2"))
 
-        assert(innerError.code == "innerCtorCode_1")
-        assert(innerError.message == "innerCtorMsg_1")
-        assert(innerError.innerError?.code == "innerCtorCode_2")
-        assert(innerError.innerError?.message == "innerCtorMsg_2")
+        assertThat(innerError).isNotNull()
+
+        assertThat(innerError.code)
+                .isNotEmpty()
+                .isEqualTo("innerCtorCode_1")
+
+        assertThat(innerError.message)
+                .isNotEmpty()
+                .isEqualTo("innerCtorMsg_1")
+
+        assertThat(innerError.innerError)
+                .isNotNull()
+                .hasFieldOrProperty("code")
+                .hasFieldOrProperty("message")
+
+        assertThat(innerError.innerError?.code)
+                .isNotEmpty()
+                .isEqualTo("innerCtorCode_2")
+
+        assertThat(innerError.innerError?.message)
+                .isNotEmpty()
+                .isEqualTo("innerCtorMsg_2")
     }
 
     @Test fun getCode() {
-        assert(innerError_1.clone().code == "InnerCode_1")
-        assert(innerError_2.clone().code == "InnerCode_2")
-        assert(innerError_3.clone().code == "InnerCode_3")
+        assertThat(innerError_1.clone())
+                .isNotNull()
+                .isNotSameAs(innerError_1)
+                .hasFieldOrPropertyWithValue("code", "InnerCode_1")
+
+        assertThat(innerError_2.clone())
+                .isNotNull()
+                .isNotSameAs(innerError_2)
+                .hasFieldOrPropertyWithValue("code", "InnerCode_2")
+
+        assertThat(innerError_3.clone())
+                .isNotNull()
+                .isNotSameAs(innerError_3)
+                .hasFieldOrPropertyWithValue("code", "InnerCode_3")
     }
 
     @Test fun getMessage() {
-        assert(innerError_1.clone().message == "InnerMsg_1")
-        assert(innerError_2.clone().message == "InnerMsg_2")
-        assert(innerError_3.clone().message == "InnerMsg_3")
+        assertThat(innerError_1.clone())
+                .isNotNull()
+                .isNotSameAs(innerError_1)
+                .hasFieldOrPropertyWithValue("message", "InnerMsg_1")
+
+        assertThat(innerError_2.clone())
+                .isNotNull()
+                .isNotSameAs(innerError_2)
+                .hasFieldOrPropertyWithValue("message", "InnerMsg_2")
+
+        assertThat(innerError_3.clone())
+                .isNotNull()
+                .isNotSameAs(innerError_3)
+                .hasFieldOrPropertyWithValue("message", "InnerMsg_3")
     }
 
     @Test fun innerHashCode() {
-        assert(innerError_1.clone().hashCode() == -1174383560)
-        assert(innerError_2.clone().hashCode() == -1174382568)
-        assert(innerError_3.clone().hashCode() == -1174381576)
+        assertThat(innerError_1.clone().hashCode())
+                .isNotNull()
+                .isInstanceOf(Integer::class.java)
+                .isEqualTo(-1174383560)
+
+        assertThat(innerError_2.clone().hashCode())
+                .isNotNull()
+                .isInstanceOf(Integer::class.java)
+                .isEqualTo(-1174382568)
+
+        assertThat(innerError_3.clone().hashCode())
+                .isNotNull()
+                .isInstanceOf(Integer::class.java)
+                .isEqualTo(-1174381576)
     }
 
     @Test fun getInnerError() {
         val innerCopy =
                 innerError_1.clone() outer innerError_2.clone()
 
-        assert(innerCopy == innerError_1)
-        assert(innerCopy.innerError == innerError_2)
+        assertThat(innerCopy)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_1, "innerError")
+
+        assertThat(innerCopy.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_2, "innerError")
+
+        assertThat(innerCopy.innerError?.innerError)
+                .isNull()
     }
 
     @Test fun inner() {
@@ -45,9 +106,20 @@ class InnerErrorTest {
                         .inner(innerError_2.clone())
                         .inner(innerError_3.clone())
 
-        assert(innerCopy == innerError_3)
-        assert(innerCopy.innerError == innerError_2)
-        assert(innerCopy.innerError?.innerError == innerError_1)
+        assertThat(innerCopy)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_3, "innerError")
+
+        assertThat(innerCopy.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_2, "innerError")
+
+        assertThat(innerCopy.innerError?.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_1, "innerError")
+
+        assertThat(innerCopy.innerError?.innerError?.innerError)
+                .isNull()
     }
 
     @Test fun outer() {
@@ -56,9 +128,20 @@ class InnerErrorTest {
                         .outer(innerError_2.clone()
                                 .outer(innerError_3.clone()))
 
-        assert(innerCopy == innerError_1)
-        assert(innerCopy.innerError == innerError_2)
-        assert(innerCopy.innerError?.innerError == innerError_3)
+        assertThat(innerCopy)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_1, "innerError")
+
+        assertThat(innerCopy.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_2, "innerError")
+
+        assertThat(innerCopy.innerError?.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_3, "innerError")
+
+        assertThat(innerCopy.innerError?.innerError?.innerError)
+                .isNull()
     }
 
     @Test fun invertOuter() {
@@ -67,15 +150,37 @@ class InnerErrorTest {
                         .outer(innerError_2.clone()
                                 .outer(innerError_3.clone()))
 
-        assert(innerCopy == innerError_1)
-        assert(innerCopy.innerError == innerError_2)
-        assert(innerCopy.innerError?.innerError == innerError_3)
+        assertThat(innerCopy)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_1, "innerError")
+
+        assertThat(innerCopy.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_2, "innerError")
+
+        assertThat(innerCopy.innerError?.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_3, "innerError")
+
+        assertThat(innerCopy.innerError?.innerError?.innerError)
+                .isNull()
 
         val invertInnerCopy = innerCopy.invert()
 
-        assert(invertInnerCopy == innerError_3)
-        assert(invertInnerCopy.innerError == innerError_2)
-        assert(invertInnerCopy.innerError?.innerError == innerError_1)
+        assertThat(invertInnerCopy)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_3, "innerError")
+
+        assertThat(invertInnerCopy.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_2, "innerError")
+
+        assertThat(invertInnerCopy.innerError?.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_1, "innerError")
+
+        assertThat(invertInnerCopy.innerError?.innerError?.innerError)
+                .isNull()
     }
 
     @Test fun invert() {
@@ -84,15 +189,38 @@ class InnerErrorTest {
                         .inner(innerError_2.clone())
                         .inner(innerError_3.clone())
 
-        assert(innerCopy == innerError_3)
-        assert(innerCopy.innerError == innerError_2)
-        assert(innerCopy.innerError?.innerError == innerError_1)
+        assertThat(innerCopy)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_3, "innerError")
+
+        assertThat(innerCopy.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_2, "innerError")
+
+        assertThat(innerCopy.innerError?.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_1, "innerError")
+
+        assertThat(innerCopy.innerError?.innerError?.innerError)
+                .isNull()
 
         val invertInnerCopy = innerCopy.invert()
 
-        assert(invertInnerCopy == innerError_1)
-        assert(invertInnerCopy.innerError == innerError_2)
-        assert(invertInnerCopy.innerError?.innerError == innerError_3)
+        assertThat(invertInnerCopy)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_1, "innerError")
+
+        assertThat(invertInnerCopy.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_2, "innerError")
+
+        assertThat(invertInnerCopy.innerError?.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_3, "innerError")
+
+        assertThat(innerCopy.innerError?.innerError?.innerError)
+                .isNull()
+
     }
 
     @Test fun parameterizedInvert() {
@@ -100,13 +228,29 @@ class InnerErrorTest {
                 innerError_1.clone()
                         .inner(innerError_2.clone())
 
-        assert(innerCopy == innerError_2)
-        assert(innerCopy.innerError == innerError_1)
+        assertThat(innerCopy)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_2, "innerError")
+
+        assertThat(innerCopy.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_1, "innerError")
 
         val invertInnerCopy = innerCopy.invert(innerError_3.clone())
 
-        assert(invertInnerCopy == innerError_1)
-        assert(invertInnerCopy.innerError == innerError_2)
-        assert(invertInnerCopy.innerError?.innerError == innerError_3)
+        assertThat(invertInnerCopy)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_1, "innerError")
+
+        assertThat(invertInnerCopy.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_2, "innerError")
+
+        assertThat(invertInnerCopy.innerError?.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_3, "innerError")
+
+        assertThat(innerCopy.innerError?.innerError?.innerError)
+                .isNull()
     }
 }
