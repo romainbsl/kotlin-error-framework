@@ -1,126 +1,231 @@
 package io.github.romainbsl.kerror.core.error
 
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class ErrorBaseTest {
     @Test fun getCode() {
-        assert(errorBase_1.code == "ErrorBaseCode_1")
-        assert(errorBase_2.code == "ErrorBaseCode_2")
-        assert(errorBase_3.code == "ErrorBaseCode_3")
+        assertThat(errorBase_1)
+                .isNotNull()
+                .hasFieldOrPropertyWithValue("code", "ErrorBaseCode_1")
+        assertThat(errorBase_2)
+                .isNotNull()
+                .hasFieldOrPropertyWithValue("code", "ErrorBaseCode_2")
+        assertThat(errorBase_3)
+                .isNotNull()
+                .hasFieldOrPropertyWithValue("code", "ErrorBaseCode_3")
     }
 
     @Test fun getMessage() {
-        assert(errorBase_1.message == "ErrorBaseMsg_1")
-        assert(errorBase_2.message == "ErrorBaseMsg_2")
-        assert(errorBase_3.message == "ErrorBaseMsg_3")
+        assertThat(errorBase_1)
+                .isNotNull()
+                .hasFieldOrPropertyWithValue("message", "ErrorBaseMsg_1")
+        assertThat(errorBase_2)
+                .isNotNull()
+                .hasFieldOrPropertyWithValue("message", "ErrorBaseMsg_2")
+        assertThat(errorBase_3)
+                .isNotNull()
+                .hasFieldOrPropertyWithValue("message", "ErrorBaseMsg_3")
     }
+
     @Test fun errorHashCode() {
-        assert(errorBase_1.hashCode() == 1043150723)
-        assert(errorBase_2.hashCode() == 1043181475)
-        assert(errorBase_3.hashCode() == 1043212227)
+        assertThat(errorBase_1.hashCode())
+                .isNotNull()
+                .isEqualTo(1043150723)
+        assertThat(errorBase_2.hashCode())
+                .isNotNull()
+                .isEqualTo(1043181475)
+        assertThat(errorBase_3.hashCode())
+                .isNotNull()
+                .isEqualTo(1043212227)
     }
 
     @Test fun getInnerError() {
-        assert(errorBase_1.innerError == null)
-        assert(errorBase_2.innerError == null)
-        assert(errorBase_3.innerError == null)
+        assertThat(errorBase_1.innerError)
+                .isNull()
+        assertThat(errorBase_2.innerError)
+                .isNull()
+        assertThat(errorBase_3.innerError)
+                .isNull()
 
-        assert(errorBase_21.innerError == innerError_1)
-        assert(errorBase_21.innerError?.innerError == innerError_2)
-        assert(errorBase_21.innerError?.innerError?.innerError == innerError_3)
+        assertThat(errorBase_21.innerError)
+                .isNotNull()
+                .isNotSameAs(innerError_1)
+                .isEqualToIgnoringGivenFields(innerError_1, "innerError")
+        assertThat(errorBase_21.innerError?.innerError)
+                .isNotNull()
+                .isNotSameAs(innerError_2)
+                .isEqualToIgnoringGivenFields(innerError_2, "innerError")
+        assertThat(errorBase_21.innerError?.innerError?.innerError)
+                .isNotNull()
+                .isNotSameAs(innerError_3)
+                .isEqualToIgnoringGivenFields(innerError_3, "innerError")
 
-        assert(errorBase_22.innerError == innerError_3)
-        assert(errorBase_22.innerError?.innerError == innerError_2)
-        assert(errorBase_22.innerError?.innerError?.innerError == innerError_1)
+        assertThat(errorBase_22.innerError)
+                .isNotNull()
+                .isNotSameAs(innerError_3)
+                .isEqualToIgnoringGivenFields(innerError_3, "innerError")
+        assertThat(errorBase_22.innerError?.innerError)
+                .isNotNull()
+                .isNotSameAs(innerError_2)
+                .isEqualToIgnoringGivenFields(innerError_2, "innerError")
+        assertThat(errorBase_22.innerError?.innerError?.innerError)
+                .isNotNull()
+                .isNotSameAs(innerError_1)
+                .isEqualToIgnoringGivenFields(innerError_1, "innerError")
     }
 
     @Test fun getDetails() {
-        assert(errorBase_31.details.isEmpty())
-        assert(errorBase_32.details.isEmpty())
+        assertThat(errorBase_31).isNotNull()
+        assertThat(errorBase_31.details).isEmpty()
 
-        assert(errorBase_35.details.count() == 2)
-        assert(errorBase_35.details.get(0) == errorBase_31)
-        assert(errorBase_35.details.get(1) == errorBase_32)
+        assertThat(errorBase_32).isNotNull()
+        assertThat(errorBase_32.details).isEmpty()
 
-        assert(errorBase_36.details.count() == 1)
-        assert(errorBase_36.details.get(0) == errorBase_33)
-        assert(errorBase_36.details.get(0).details.count() == 1)
-        assert(errorBase_36.details.get(0).details.get(0) == errorBase_34)
+        assertThat(errorBase_35.details)
+                .isNotNull()
+                .isNotEmpty()
+                .hasSize(2)
+                .containsExactlyInAnyOrder(errorBase_31, errorBase_32)
+
+        assertThat(errorBase_36.details)
+                .isNotNull()
+                .isNotEmpty()
+                .hasSize(1)
+                .containsExactly(errorBase_33)
+
+        assertThat(errorBase_36.details.get(0).details)
+                .isNotNull()
+                .isNotEmpty()
+                .hasSize(1)
+                .containsExactly(errorBase_34)
     }
 
     @Test fun addDetail() {
-        assert(errorBase_41.details.isEmpty())
+        assertThat(errorBase_41.details).isEmpty()
 
         errorBase_41.details.add(errorBase_42)
 
-        assert(!errorBase_41.details.isEmpty())
-        assert(errorBase_41.details.count() == 1)
-        assert(errorBase_41.details.get(0) == errorBase_42)
+        assertThat(errorBase_41.details)
+                .isNotEmpty()
+
+        assertThat(errorBase_41.details)
+                .hasSize(1)
+                .containsExactly(errorBase_42)
 
         errorBase_41.details.add(errorBase_43)
 
-        assert(!errorBase_41.details.isEmpty())
-        assert(errorBase_41.details.count() == 2)
-        assert(errorBase_41.details.get(0) == errorBase_42)
-        assert(errorBase_41.details.get(1) == errorBase_43)
+        assertThat(errorBase_41.details).isNotEmpty()
 
-        assert(errorBase_43.details.isEmpty())
+        assertThat(errorBase_41.details)
+                .hasSize(2)
+                .containsExactlyInAnyOrder(errorBase_42, errorBase_43)
+
+        assertThat(errorBase_43.details).isEmpty()
 
         errorBase_43.details.add(errorBase_44)
 
-        assert(!errorBase_43.details.isEmpty())
-        assert(errorBase_43.details.count() == 1)
-        assert(errorBase_43.details.get(0) == errorBase_44)
+        assertThat(errorBase_43.details).isNotEmpty()
+
+        assertThat(errorBase_43.details)
+                .hasSize(1)
+                .containsExactly(errorBase_44)
     }
 
     @Test fun inner() {
-        assert(errorBase_51.innerError == null)
+        assertThat(errorBase_51.innerError).isNull()
 
         errorBase_51.inner(innerError_1.clone())
-        assert(errorBase_51.innerError == innerError_1)
+
+        assertThat(errorBase_51.innerError)
+                .isNotNull()
+                .isNotSameAs(innerError_1)
+                .isEqualTo(innerError_1)
 
         errorBase_51.inner(innerError_2.clone())
-        assert(errorBase_51.innerError == innerError_1)
-        assert(errorBase_51.innerError?.innerError == innerError_2)
+
+        assertThat(errorBase_51.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_1, "innerError")
+        assertThat(errorBase_51.innerError?.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_2, "innerError")
 
         errorBase_51.inner(innerError_3.clone())
-        assert(errorBase_51.innerError == innerError_1)
-        assert(errorBase_51.innerError?.innerError == innerError_2)
-        assert(errorBase_51.innerError?.innerError?.innerError == innerError_3)
+
+        assertThat(errorBase_51.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_1, "innerError")
+        assertThat(errorBase_51.innerError?.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_2, "innerError")
+        assertThat(errorBase_51.innerError?.innerError?.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_3, "innerError")
     }
 
     @Test fun outer() {
-        assert(errorBase_61.innerError == null)
+        assertThat(errorBase_61.innerError).isNull()
 
         errorBase_61.outer(innerError_1.clone())
-        assert(errorBase_61.innerError == innerError_1)
-        errorBase_61.outer(innerError_2.clone())
+        assertThat(errorBase_61.innerError)
+                .isNotNull()
+                .isEqualTo(innerError_1)
 
-        assert(errorBase_61.innerError == innerError_2)
-        assert(errorBase_61.innerError?.innerError == innerError_1)
+        errorBase_61.outer(innerError_2.clone())
+        assertThat(errorBase_61.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_2, "innerError")
+        assertThat(errorBase_61.innerError?.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_1, "innerError")
     }
 
     @Test fun invertInneredInnerError() {
-        assert(errorBase_71.innerError == innerError_3)
-        assert(errorBase_71.innerError?.innerError == innerError_2)
-        assert(errorBase_71.innerError?.innerError?.innerError == innerError_1)
+        assertThat(errorBase_71.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_3, "innerError")
+        assertThat(errorBase_71.innerError?.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_2, "innerError")
+        assertThat(errorBase_71.innerError?.innerError?.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_1, "innerError")
 
         errorBase_71.invertInnerError()
 
-        assert(errorBase_71.innerError == innerError_1)
-        assert(errorBase_71.innerError?.innerError == innerError_2)
-        assert(errorBase_71.innerError?.innerError?.innerError == innerError_3)
+        assertThat(errorBase_71.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_1, "innerError")
+        assertThat(errorBase_71.innerError?.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_2, "innerError")
+        assertThat(errorBase_71.innerError?.innerError?.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_3, "innerError")
     }
 
     @Test fun invertOuteredInnerError() {
-        assert(errorBase_72.innerError == innerError_1)
-        assert(errorBase_72.innerError?.innerError == innerError_2)
-        assert(errorBase_72.innerError?.innerError?.innerError == innerError_3)
+        assertThat(errorBase_72.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_1, "innerError")
+        assertThat(errorBase_72.innerError?.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_2, "innerError")
+        assertThat(errorBase_72.innerError?.innerError?.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_3, "innerError")
 
         errorBase_72.invertInnerError()
 
-        assert(errorBase_72.innerError == innerError_3)
-        assert(errorBase_72.innerError?.innerError == innerError_2)
-        assert(errorBase_72.innerError?.innerError?.innerError == innerError_1)
+        assertThat(errorBase_72.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_3, "innerError")
+        assertThat(errorBase_72.innerError?.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_2, "innerError")
+        assertThat(errorBase_72.innerError?.innerError?.innerError)
+                .isNotNull()
+                .isEqualToIgnoringGivenFields(innerError_1, "innerError")
     }
 }
