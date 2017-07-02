@@ -24,7 +24,7 @@
 
     <properties>
         <!-- Build version -->
-        <kotlin.version>1.1.2-3</kotlin.version>
+        <kotlin.version>1.1.3</kotlin.version>
         <!-- Loggign -->
         <log4j-slf4j.version>2.7</log4j-slf4j.version>
         <!--Unit Testing tools -->
@@ -69,7 +69,7 @@
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-test</artifactId>
+            <artifactId>kotlin-test-junit</artifactId>
             <version>${kotlin.version}</version>
             <scope>test</scope>
         </dependency>
