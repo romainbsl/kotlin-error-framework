@@ -1,0 +1,1 @@
+[![pipeline status](https://gitlab.com/rb-kotlin/kotlin-error-framework/badges/master/pipeline.svg)](https://gitlab.com/rb-kotlin/kotlin-error-framework/commits/master)
